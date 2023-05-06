@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.kee.common.security.service.UserDetailsServiceImpl,\
+  com.kee.common.security.handler.CustomAccessDeniedHandler,\
+  com.kee.common.security.service.PermissionService,\
+  com.kee.common.security.config.MethodSecurityConfig,\
+  com.kee.common.security.handler.GlobalExceptionHandler

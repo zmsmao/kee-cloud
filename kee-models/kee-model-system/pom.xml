@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>kee-models</artifactId>
+        <groupId>com.kee</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>kee-model-system</artifactId>
+
+    <dependencies>
+
+        <!-- SpringCloud Ailibaba Nacos -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!-- SpringCloud Ailibaba Nacos Config -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+<!--        &lt;!&ndash; SpringCloud Ailibaba Sentinel &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
+<!--        </dependency>-->
+
+        <!-- SpringBoot Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Mysql Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- Trs Common DataSource -->
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-datasource</artifactId>
+        </dependency>
+
+        <!-- Trs Common DataScope -->
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-datascope</artifactId>
+
+        </dependency>
+
+        <!-- Trs Common Log -->
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-log</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>6.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-swagger</artifactId>
+        </dependency>
+
+        <!-- kee Common Redis-->
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-reptiles</artifactId>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun</groupId>-->
+<!--            <artifactId>tea-openapi</artifactId>-->
+<!--            <version>0.2.5</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.github.binarywang</groupId>-->
+<!--            <artifactId>weixin-java-mp</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; 阿里云短信&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun</groupId>-->
+<!--            <artifactId>dysmsapi20170525</artifactId>-->
+<!--            <version>2.0.22</version>-->
+<!--        </dependency>-->
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.7</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

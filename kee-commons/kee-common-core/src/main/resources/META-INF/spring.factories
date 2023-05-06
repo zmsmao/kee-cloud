@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+   com.kee.common.core.utils.SpringUtils,\
+   com.kee.common.core.mybatis.MybatisPlusConfig

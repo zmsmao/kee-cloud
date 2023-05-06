@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration= \
+  com.kee.api.system.factory.RemoteJobFallbackFactory,\
+  com.kee.api.system.factory.RemoteDeptFallbackFactory,\
+  com.kee.api.system.factory.RemoteFileFallbackFactory,\
+  com.kee.api.system.factory.RemoteLogFallbackFactory,\
+  com.kee.api.system.factory.RemoteUserFallbackFactory
