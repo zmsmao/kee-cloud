@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author: zms
  */
 @Target({ ElementType.PARAMETER, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

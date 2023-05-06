@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author zms
  */
 @Component
 public class RemoteJobFallbackFactory implements FallbackFactory<RemoteJobService> {

@@ -3,7 +3,7 @@ package com.kee.common.log.enums;
 /**
  * 业务操作类型
  * 
- * @author trs
+ * @author zms
  */
 public enum BusinessType
 {

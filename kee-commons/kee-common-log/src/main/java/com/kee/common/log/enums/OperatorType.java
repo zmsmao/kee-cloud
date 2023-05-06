@@ -3,7 +3,7 @@ package com.kee.common.log.enums;
 /**
  * 操作人类别
  * 
- * @author trs
+ * @author zms
  */
 public enum OperatorType
 {

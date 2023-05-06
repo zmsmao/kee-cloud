@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 用户和角色关联 sys_user_role
  * 
- * @author ruoyi
+ * @author zms
  */
 public class SysUserRole implements Serializable
 {

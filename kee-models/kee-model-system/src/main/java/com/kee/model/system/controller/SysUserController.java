@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 /**
  * 用户信息
  * 
- * @author trs
+ * @author zms
  */
 @Validated
 @RestController

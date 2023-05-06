@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 /**
  * 同步调用用户服务
  * 
- * @author trs
+ * @author zms
  */
 @Service
 public class AwaitUserService

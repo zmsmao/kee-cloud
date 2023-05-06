@@ -7,7 +7,7 @@ import com.kee.model.system.domain.SysUserOnline;
 /**
  * 在线用户 服务层
  * 
- * @author ruoyi
+ * @author zms
  */
 public interface ISysUserOnlineService
 {

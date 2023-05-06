@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author: zms
  */
 @Data
 @Configuration

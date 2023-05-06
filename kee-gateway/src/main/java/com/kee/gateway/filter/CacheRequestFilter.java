@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author trs
+ * @author zms
  */
 @Component
 public class CacheRequestFilter extends AbstractGatewayFilterFactory<CacheRequestFilter.Config> {

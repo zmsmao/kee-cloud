@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author zms
  */
 @EnableCustomConfig
 @EnableCustomSwagger2

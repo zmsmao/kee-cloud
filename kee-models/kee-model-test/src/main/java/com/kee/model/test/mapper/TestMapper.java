@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author zms
  */
 @Mapper
 public interface TestMapper extends BaseMapper<Test> {

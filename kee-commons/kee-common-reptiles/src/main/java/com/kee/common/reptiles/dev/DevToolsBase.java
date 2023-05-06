@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author: zms
  */
 public interface DevToolsBase {
     /**

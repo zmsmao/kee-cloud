@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * 角色信息
  * 
- * @author trs
+ * @author zms
  */
 @RestController
 @RequestMapping("/role")

@@ -36,7 +36,7 @@ spring:
 #        ds1:
 #          nacos:
 #            server-addr: 127.0.0.1:8848
-#            dataId: sentinel-trs-gateway
+#            dataId: sentinel-kee-gateway
 #            groupId: DEFAULT_GROUP
 #            data-type: json
 #            rule-type: flow

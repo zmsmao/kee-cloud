@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * 在线用户 服务层处理
  * 
- * @author ruoyi
+ * @author zms
  */
 @Service
 public class SysUserOnlineServiceImpl implements ISysUserOnlineService

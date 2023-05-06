@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author zms
  */
 @EnableKeeFeignClients
 @SpringBootApplication

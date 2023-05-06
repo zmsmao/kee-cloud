@@ -43,20 +43,20 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!-- Trs Common DataSource -->
+        <!-- kee Common DataSource -->
         <dependency>
             <groupId>com.kee</groupId>
             <artifactId>kee-common-datasource</artifactId>
         </dependency>
 
-        <!-- Trs Common DataScope -->
+        <!-- kee Common DataScope -->
         <dependency>
             <groupId>com.kee</groupId>
             <artifactId>kee-common-datascope</artifactId>
 
         </dependency>
 
-        <!-- Trs Common Log -->
+        <!-- kee Common Log -->
         <dependency>
             <groupId>com.kee</groupId>
             <artifactId>kee-common-log</artifactId>

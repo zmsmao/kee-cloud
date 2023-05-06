@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author zms
  */
 @Data
 @TableName("test")

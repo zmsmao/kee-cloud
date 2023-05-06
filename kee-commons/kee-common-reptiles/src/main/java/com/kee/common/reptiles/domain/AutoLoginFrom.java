@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author: zms
  */
 @Data
 public class AutoLoginFrom {

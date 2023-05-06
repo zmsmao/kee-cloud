@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 操作日志记录
  * 
- * @author trs
+ * @author zms
  */
 @RestController
 @RequestMapping("/operlog")

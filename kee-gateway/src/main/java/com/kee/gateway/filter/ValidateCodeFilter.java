@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * 验证码过滤器
  *
- * @author trs
+ * @author zms
  */
 @Component
 public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {

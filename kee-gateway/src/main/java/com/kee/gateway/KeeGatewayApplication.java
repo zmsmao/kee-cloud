@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author zms
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 public class KeeGatewayApplication {

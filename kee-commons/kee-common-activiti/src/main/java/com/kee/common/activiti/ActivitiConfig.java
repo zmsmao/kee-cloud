@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * @Description : Object
- * @author: zeng.maosen
+ * @author: zms
  */
 @Configuration
 public class ActivitiConfig {

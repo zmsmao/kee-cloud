@@ -3,7 +3,7 @@ package com.kee.model.system.domain;
 /**
  * 当前在线会话
  * 
- * @author ruoyi
+ * @author zms
  */
 public class SysUserOnline
 {

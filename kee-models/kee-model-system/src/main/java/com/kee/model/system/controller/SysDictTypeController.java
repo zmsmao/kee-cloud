@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * 数据字典信息
  * 
- * @author trs
+ * @author zms
  */
 @RestController
 @RequestMapping("/dict/type")

@@ -10,7 +10,7 @@ import org.springframework.core.annotation.Order;
 /**
  * 网关限流配置
  * 
- * @author trs
+ * @author zms
  */
 @Configuration
 public class GatewayConfig
