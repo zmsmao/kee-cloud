@@ -37,9 +37,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private RemoteUserService remoteUserService;
 
-    @Autowired
-    private RedisService redisService;
-
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -59,11 +56,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             log.info("登录用户：{} 已被停用.", username);
             throw new BaseException("对不起，您的账号：" + username + " 已停用");
         }
-        //判断是否开启密码错误验证
-        if (checkPasswordErrorStatus()) {
-            //获取redis缓存信息,判断用户是否被锁定
-            validate(username);
-        }
     }
 
     private UserDetails getUserDetails(R<UserInfo> result) {
@@ -81,21 +73,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         SysUser user = info.getSysUser();
         return new LoginUser(user.getUserId(), user.getDeptId(), user.getUserName(), user.getPassword(), true, true, true, true,
                 authorities);
-    }
-
-    private void validate(String username) {
-        String key = Constants.PWD_ERR_CNT_KEY + username;
-        Integer retryCount = redisService.getCacheObject(key);
-        if (retryCount != null && retryCount >= Constants.PASSWORD_MAX_RETRY_COUNT) {
-            log.info("登录用户：{} 已被锁定.", username);
-            throw new BaseException("对不起，您的账号：" + username + " 已被锁定");
-        }
-    }
-
-    private boolean checkPasswordErrorStatus() {
-        String key = Constants.SYS_CONFIG_KEY + Constants.PWD_ERR_CONFIG_KEY;
-        String pwdConfigValue = redisService.getCacheObject(key);
-        return Constants.PWD_ERR_CNT_OPEN.equals(pwdConfigValue);
     }
 
 }

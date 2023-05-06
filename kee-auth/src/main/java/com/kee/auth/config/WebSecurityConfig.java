@@ -28,9 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Resource
     private UserDetailsService userDetailsService;
 
-    @Resource
-    private RedisService redisService;
-
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -49,18 +46,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
         // 使用密码模式进行认证
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        auth.authenticationProvider(new CustomLoginAuthenticationProvider(userDetailsService, redisService));
+        auth.authenticationProvider(new CustomLoginAuthenticationProvider(userDetailsService));
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        http.csrf().disable()
+        http
         .authorizeRequests()
         .antMatchers(
             "/actuator/**",
-            "/oauth/*",
+            "/oauth/**",
             "/token/**").permitAll()
-        .anyRequest().authenticated();
+        .anyRequest().authenticated()
+                .and().csrf().disable();
     }
 }

@@ -22,8 +22,6 @@ public class AuthenticationSuccessEventHandler implements ApplicationListener<Au
     @Autowired
     private RemoteLogService remoteLogService;
 
-    @Autowired
-    private RedisService redisService;
 
     @Override
     public void onApplicationEvent(AuthenticationSuccessEvent event) {
@@ -34,13 +32,6 @@ public class AuthenticationSuccessEventHandler implements ApplicationListener<Au
             String username = user.getUsername();
             // 记录用户登录日志
             remoteLogService.saveLogininfor(username, Constants.LOGIN_SUCCESS, "登录成功");
-//            //清除密码错误计数
-//            clearRedisCache(username);
         }
     }
-
-//    private void clearRedisCache(String username) {
-//        String key = Constants.PWD_ERR_CNT_KEY + username;
-//        redisService.deleteObject(key);
-//    }
 }

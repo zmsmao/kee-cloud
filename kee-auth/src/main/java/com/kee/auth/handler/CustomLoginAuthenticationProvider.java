@@ -10,18 +10,19 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 
 public class CustomLoginAuthenticationProvider extends DaoAuthenticationProvider {
 
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
-    private final RedisService redisService;
-
-    public CustomLoginAuthenticationProvider(UserDetailsService userDetailsService, RedisService redisService) {
+    public CustomLoginAuthenticationProvider(UserDetailsService userDetailsService) {
         super();
-        this.redisService = redisService;
         // 这个地方一定要对userDetailsService赋值，不然userDetailsService是null
         setUserDetailsService(userDetailsService);
     }
@@ -29,20 +30,13 @@ public class CustomLoginAuthenticationProvider extends DaoAuthenticationProvider
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         if (authentication.getCredentials() == null) {
-            this.logger.debug("Authentication failed: no credentials provided");
+            this.logger.debug("Failed to authenticate since no credentials provided");
             throw new BadCredentialsException(this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
         } else {
             String presentedPassword = authentication.getCredentials().toString();
-            if (Constants.CUSTOM_LOGIN_SMS.equals(presentedPassword)) {
-                //免密登录，不验证密码（还可以继续扩展，只要传进来的password标识即可）
-            } else {
-                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
-                    //记录登录失败的次数
-//                    loginFailure(userDetails.getUsername());
-                    this.logger.debug("Authentication failed: password does not match stored value");
-                    throw new BadCredentialsException(this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
-                }
+            if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+                this.logger.debug("Failed to authenticate since password does not match stored value");
+                throw new BadCredentialsException(this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
             }
         }
     }

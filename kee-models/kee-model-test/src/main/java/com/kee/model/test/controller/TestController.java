@@ -1,6 +1,8 @@
 package com.kee.model.test.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.kee.common.core.web.controller.BaseController;
+import com.kee.common.core.web.domain.AjaxResult;
 import com.kee.common.reptiles.config.WebDriverAcquisitionConfig;
 import com.kee.common.reptiles.dev.concrete.ChromeDevTools;
 import com.kee.common.reptiles.utils.WebDriverAcquisitionUtil;
@@ -26,9 +28,9 @@ import java.util.List;
  * @author zms
  */
 @RestController
-@RequestMapping
+@RequestMapping("/test")
 @Api(tags = {"测试模块"})
-public class TestController {
+public class TestController extends BaseController {
 
     @Resource
     private WebDriverAcquisitionConfig config;
@@ -43,10 +45,9 @@ public class TestController {
     private TestMapper testMapper;
 
     @SneakyThrows
-    @Override
     @GetMapping("/test")
     @ApiOperation(value = "测试")
-    public String toString() {
+    public AjaxResult list() {
         System.out.println(config.getAcquisition().getLocalPath());
         WebDriver webDriver = WebDriverAcquisitionUtil.chromeDriver(config.getAcquisition().getLocalPath());
         ChromeDriver chromeDriver = (ChromeDriver)webDriver;
@@ -56,13 +57,13 @@ public class TestController {
         Thread.sleep(1000);
         chromeDevTools.disable();
         System.out.println(testMapper.selectList(Wrappers.lambdaQuery(Test.class)));
-        return chromeDevTools.getRequestList().get(0).getUrl();
+        return AjaxResult.success(chromeDevTools.getRequestList());
     }
 
 
     @GetMapping("/task")
-    public List<Task> task(){
-        return taskService.createTaskQuery().list();
+    public AjaxResult task(){
+        return AjaxResult.success(taskService.createTaskQuery().list());
     }
 
 
