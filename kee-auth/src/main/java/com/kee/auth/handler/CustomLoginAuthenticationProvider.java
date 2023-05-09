@@ -1,8 +1,5 @@
 package com.kee.auth.handler;
 
-
-import com.kee.common.core.constant.Constants;
-import com.kee.common.redis.service.RedisService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.annotation.Resource;
-import java.util.concurrent.TimeUnit;
 
 
 public class CustomLoginAuthenticationProvider extends DaoAuthenticationProvider {
