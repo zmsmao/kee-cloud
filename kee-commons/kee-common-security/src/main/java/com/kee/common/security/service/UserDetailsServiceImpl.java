@@ -4,7 +4,6 @@ package com.kee.common.security.service;
 import com.kee.api.system.RemoteUserService;
 import com.kee.api.system.domain.SysUser;
 import com.kee.api.system.model.UserInfo;
-import com.kee.common.core.constant.Constants;
 import com.kee.common.core.domain.R;
 import com.kee.common.core.enums.UserStatus;
 import com.kee.common.core.exception.BaseException;
@@ -14,13 +13,14 @@ import com.kee.common.security.domain.LoginUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,11 +31,16 @@ import java.util.Set;
  * @author zms
  */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements SmsCodeServiceImpl{
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Autowired
     private RemoteUserService remoteUserService;
+
+    @Resource
+    private RedisService redisService;
+
+    private final static String SMS_PHONE="sms:phone:";
 
 
     @Override
@@ -73,6 +78,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         SysUser user = info.getSysUser();
         return new LoginUser(user.getUserId(), user.getDeptId(), user.getUserName(), user.getPassword(), true, true, true, true,
                 authorities);
+    }
+
+    @Override
+    public UserDetails loadUserByPhone(String phone) {
+        R<UserInfo> infoR = remoteUserService.phone(phone);
+        if (infoR.getCode()==500) {
+            throw new InternalAuthenticationServiceException("未找到与该手机号对应的用户");
+        }
+        checkUser(infoR, phone);
+        return getUserDetails(infoR);
     }
 
 }

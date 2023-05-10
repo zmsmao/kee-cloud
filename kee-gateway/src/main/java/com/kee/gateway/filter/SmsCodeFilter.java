@@ -15,10 +15,12 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,9 +33,9 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @Description : Object
@@ -63,8 +65,15 @@ public class SmsCodeFilter extends AbstractGatewayFilterFactory<Object>{
                return chain.filter(exchange);
            }
            try {
-               Map<String, Object> body = parseRequestBody(request);
-               validateSmsCode(body);
+//               Map<String, Object> body = parseJsonRequestBody(request);
+               MultiValueMap<String, String> queryParams;
+               if (Objects.requireNonNull(request.getMethod()) == HttpMethod.POST) {
+                   String body = ValidateCodeFilter.resolveBodyFromRequest(request);
+                   queryParams = ValidateCodeFilter.getQueryParams(body);
+               } else {
+                   queryParams = request.getQueryParams();
+               }
+               validateSmsCode(queryParams);
            } catch (Exception e){
                ServerHttpResponse response = exchange.getResponse();
                return exchange.getResponse().writeWith(
@@ -75,7 +84,7 @@ public class SmsCodeFilter extends AbstractGatewayFilterFactory<Object>{
        };
     }
 
-    private static Map<String, Object> parseRequestBody(ServerHttpRequest request) {
+    private static Map<String, Object> parseJsonRequestBody(ServerHttpRequest request) {
         Flux<DataBuffer> body = request.getBody();
         Map<String,Object> map = new HashMap<>();
         body.subscribe(buffer -> {
@@ -95,7 +104,7 @@ public class SmsCodeFilter extends AbstractGatewayFilterFactory<Object>{
        return map;
     }
 
-    private void validateSmsCode(Map<String,Object> map) throws Exception {
+    private void validateSmsCode(MultiValueMap<String,String> map) throws Exception {
         Object smsCode = map.get("code");
         Object phone = map.get("phone");
         if(StringUtils.isNull(phone)){
@@ -105,11 +114,11 @@ public class SmsCodeFilter extends AbstractGatewayFilterFactory<Object>{
         {
             throw new  RuntimeException("请求体无code参数");
         }
-        String phoneStr = (String)phone;
+        String phoneStr = ((List<String>)phone).get(0);
         if (StringUtils.isEmpty(phoneStr)) {
             throw new RuntimeException("手机号码不能为空！");
         }
-        String smsCodeStr = (String)smsCode;
+        String smsCodeStr = ((List<String>)smsCode).get(0);
         if (StringUtils.isEmpty(smsCodeStr)) {
             throw new RuntimeException("验证码不能为空！");
         }

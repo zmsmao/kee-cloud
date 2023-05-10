@@ -141,6 +141,28 @@ public class SysUserController extends BaseController
     }
 
     /**
+     * 获取当前用户信息
+     */
+    @GetMapping("/code/phone")
+    public R<UserInfo> phone(@RequestParam("phone") String phone)
+    {
+        SysUser sysUser = userService.selectPhoneByUser(phone);
+        if (StringUtils.isNull(sysUser))
+        {
+            return R.fail("手机号对应的用户未找到");
+        }
+        // 角色集合
+        Set<String> roles = permissionService.getRolePermission(sysUser);
+        // 权限集合
+        Set<String> permissions = permissionService.getMenuPermission(sysUser);
+        UserInfo sysUserVo = new UserInfo();
+        sysUserVo.setSysUser(sysUser);
+        sysUserVo.setRoles(roles);
+        sysUserVo.setPermissions(permissions);
+        return R.ok(sysUserVo);
+    }
+
+    /**
      * 获取用户信息
      * 
      * @return 用户信息

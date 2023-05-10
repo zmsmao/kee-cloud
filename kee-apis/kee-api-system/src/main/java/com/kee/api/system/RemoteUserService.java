@@ -32,6 +32,14 @@ public interface RemoteUserService
     R<UserInfo> getUserInfo(@PathVariable("username") String username);
 
     /**
+     * 通过手机号码查询用户
+     *
+     *
+     * @param phone@return 用户对象信息
+     */
+    @GetMapping(value = "/user/code/phone")
+    R<UserInfo> phone(@RequestParam("phone") String phone);
+    /**
      * 新增用户
      * @param user
      * @return

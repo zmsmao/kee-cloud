@@ -33,6 +33,11 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
             }
 
             @Override
+            public R<UserInfo> phone(String phone) {
+                return R.fail("获取用户失败:" + throwable.getMessage());
+            }
+
+            @Override
             public AjaxResult add(SysUser user, String type) {
                 return AjaxResult.error("新增用户失败！！" + throwable.getMessage());
             }

@@ -60,7 +60,7 @@
             <artifactId>kaptcha</artifactId>
         </dependency>
 
-        <!-- Trs Common Redis-->
+        <!-- kee Common Redis-->
         <dependency>
             <groupId>com.kee</groupId>
             <artifactId>kee-common-redis</artifactId>

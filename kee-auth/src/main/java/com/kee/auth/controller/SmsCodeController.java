@@ -28,7 +28,7 @@ public class SmsCodeController extends BaseController {
 
     @PostMapping("/send")
     public AjaxResult send(@RequestBody SmsCode code){
-        int time = 60;
+        int time = 300;
         if(StringUtils.isNotNull(redisService.getCacheObject(SMS_PHONE+code.getPhone())))
         {
             return AjaxResult.error("该验证码已发送，请"+time+"s之后再试");
@@ -37,7 +37,7 @@ public class SmsCodeController extends BaseController {
         code.setCode(smsCode);
         code.setDateTime(LocalDateTime.now().plusSeconds(time));
         code.setEffective("true");
-        redisService.setCacheObject(SMS_PHONE+code.getPhone(),code,60L, TimeUnit.SECONDS);
+        redisService.setCacheObject(SMS_PHONE+code.getPhone(),code, (long) time, TimeUnit.SECONDS);
         System.out.println(SMS_PHONE+code.getPhone());
         return AjaxResult.success("有效时间为"+time+"s",code);
     }

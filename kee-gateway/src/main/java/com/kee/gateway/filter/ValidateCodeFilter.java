@@ -90,7 +90,7 @@ public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {
         };
     }
 
-    private MultiValueMap<String, String> getQueryParams(String body) {
+    public static MultiValueMap<String, String> getQueryParams(String body) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         Matcher matcher = PARAM_PATTERN.matcher(body);
         while (matcher.find()) {
@@ -103,7 +103,7 @@ public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {
         return queryParams;
     }
 
-    private String decodeQueryParam(String value) {
+    public static String decodeQueryParam(String value) {
         try {
             return URLDecoder.decode(value, "UTF-8");
         } catch (UnsupportedEncodingException var3) {
@@ -111,7 +111,7 @@ public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {
         }
     }
 
-    private String resolveBodyFromRequest(ServerHttpRequest request) {
+    public static String resolveBodyFromRequest(ServerHttpRequest request) {
         // 获取请求体
         Flux<DataBuffer> body = request.getBody();
         AtomicReference<String> bodyRef = new AtomicReference<>();
