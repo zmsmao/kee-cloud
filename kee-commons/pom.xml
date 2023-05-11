@@ -24,6 +24,7 @@
         <module>kee-common-log</module>
         <module>kee-common-reptiles</module>
         <module>kee-common-activiti</module>
+        <module>kee-common-seata</module>
     </modules>
 
 

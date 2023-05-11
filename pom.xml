@@ -348,6 +348,18 @@
             </dependency>
 
             <dependency>
+                <groupId>com.kee</groupId>
+                <artifactId>kee-common-seata</artifactId>
+                <version>${kee.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-spring-boot-starter</artifactId>
+                <version>1.6.0</version>
+            </dependency>
+
+            <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>

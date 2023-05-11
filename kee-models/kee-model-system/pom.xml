@@ -84,6 +84,11 @@
             <artifactId>kee-common-reptiles</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-seata</artifactId>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>com.aliyun</groupId>-->
 <!--            <artifactId>tea-openapi</artifactId>-->
