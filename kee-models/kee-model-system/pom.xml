@@ -25,11 +25,6 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
-<!--        &lt;!&ndash; SpringCloud Ailibaba Sentinel &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
-<!--        </dependency>-->
 
         <!-- SpringBoot Actuator -->
         <dependency>
@@ -88,25 +83,6 @@
             <groupId>com.kee</groupId>
             <artifactId>kee-common-seata</artifactId>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.aliyun</groupId>-->
-<!--            <artifactId>tea-openapi</artifactId>-->
-<!--            <version>0.2.5</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>com.github.binarywang</groupId>-->
-<!--            <artifactId>weixin-java-mp</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-
-<!--        &lt;!&ndash; 阿里云短信&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.aliyun</groupId>-->
-<!--            <artifactId>dysmsapi20170525</artifactId>-->
-<!--            <version>2.0.22</version>-->
-<!--        </dependency>-->
 
     </dependencies>
 

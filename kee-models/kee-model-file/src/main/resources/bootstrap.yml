@@ -1,17 +1,17 @@
 # Tomcat
 server:
-  port: 9102
+  port: 9202
 
 # Spring
 spring:
   application:
     # 应用名称
-    name: kee-gateway
+    name: kee-model-file
+  main:
+    allow-bean-definition-overriding: true
   profiles:
     # 环境配置
     active: dev
-  main:
-    allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:
@@ -25,5 +25,3 @@ spring:
         # 共享配置
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
-
-

@@ -12,6 +12,7 @@
     <modules>
         <module>kee-model-system</module>
         <module>kee-model-test</module>
+        <module>kee-model-file</module>
     </modules>
 
     <artifactId>kee-models</artifactId>

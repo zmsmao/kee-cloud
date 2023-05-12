@@ -62,6 +62,6 @@ public class TokenController
             // 记录用户退出日志
             remoteLogService.saveLogininfor(username, Constants.LOGOUT, "退出成功");
         }
-        return R.ok();
+        return R.ok("退出成功");
     }
 }
