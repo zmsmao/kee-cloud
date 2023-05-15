@@ -42,10 +42,10 @@
             <artifactId>kee-common-log</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.kee</groupId>-->
-<!--            <artifactId>kee-common-security</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-monitor</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.kee</groupId>

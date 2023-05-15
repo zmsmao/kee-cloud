@@ -31,20 +31,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-monitor</artifactId>
         </dependency>
-
-<!--        &lt;!&ndash; Micrometer core dependecy  &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.micrometer</groupId>-->
-<!--            <artifactId>micrometer-core</artifactId>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; Micrometer Prometheus registry  &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.micrometer</groupId>-->
-<!--            <artifactId>micrometer-registry-prometheus</artifactId>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>mysql</groupId>

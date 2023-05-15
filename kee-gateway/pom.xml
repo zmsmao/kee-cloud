@@ -50,8 +50,8 @@
 
         <!-- SpringBoot Actuator -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>com.kee</groupId>
+            <artifactId>kee-common-monitor</artifactId>
         </dependency>
 
         <!--验证码 -->
