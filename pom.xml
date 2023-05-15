@@ -122,18 +122,13 @@
                 <version>2.6.7</version>
             </dependency>
 
-            <!-- Micrometer core dependecy  -->
-            <dependency>
-                <groupId>io.micrometer</groupId>
-                <artifactId>micrometer-core</artifactId>
-                <version>1.9.6</version>
-            </dependency>
-            <!-- Micrometer Prometheus registry  -->
+            <!-- prometheus -->
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
-                <version>1.0.6</version>
+                <version>1.11.0</version>
             </dependency>
+
 
             <!-- Mybatis Plus依赖配置 -->
             <dependency>
@@ -333,6 +328,12 @@
                 <groupId>com.kee</groupId>
                 <artifactId>kee-common-log</artifactId>
                 <version>${kee.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kee</groupId>
+                <artifactId>kee-common-monitor</artifactId>
+                <version>1.0.0</version>
             </dependency>
 
             <dependency>
