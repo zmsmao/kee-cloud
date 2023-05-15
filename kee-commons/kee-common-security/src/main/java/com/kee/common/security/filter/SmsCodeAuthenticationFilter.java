@@ -1,8 +1,11 @@
 package com.kee.common.security.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.kee.common.core.domain.SmsCode;
+import com.kee.common.core.exception.CustomException;
 import com.kee.common.core.utils.StringUtils;
+import com.kee.common.core.web.domain.AjaxResult;
 import com.kee.common.redis.service.RedisService;
 import lombok.SneakyThrows;
 import org.springframework.lang.Nullable;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,20 +104,20 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
         if(StringUtils.isNull(cacheObject))
         {
             redisService.deleteObject(SMS_PHONE + phone);
-            throw new RuntimeException("验证码不存在，请重新发送！");
+            throw new CustomException("验证码不存在，请重新发送！",500);
         }
         if(cacheObject.isExpire())
         {
             redisService.deleteObject(SMS_PHONE + phone);
-            throw new RuntimeException("验证码已过期，请重新发送！");
+            throw new CustomException("验证码已过期，请重新发送！",500);
         }
         if (!cacheObject.getCode().equals(smsCode)) {
             redisService.deleteObject(SMS_PHONE + phone);
-            throw new RuntimeException("验证码不正确，请重新发送！");
+            throw new CustomException("验证码不正确，请重新发送！",500);
         }
         if (!cacheObject.getPhone().equals(phone)) {
             redisService.deleteObject(SMS_PHONE + phone);
-            throw new RuntimeException("手机号码不正确，请重新发送！");
+            throw new CustomException("手机号码不正确，请重新发送！",500);
         }
     }
 

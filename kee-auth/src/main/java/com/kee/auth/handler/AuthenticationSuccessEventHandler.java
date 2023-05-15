@@ -31,7 +31,7 @@ public class AuthenticationSuccessEventHandler implements ApplicationListener<Au
             LoginUser user = (LoginUser) authentication.getPrincipal();
             String username = user.getUsername();
             // 记录用户登录日志
-            remoteLogService.saveLogininfor(username, Constants.LOGIN_SUCCESS, "登录成功");
+//            remoteLogService.saveLogininfor(username, Constants.LOGIN_SUCCESS, "登录成功");
         }
     }
 }

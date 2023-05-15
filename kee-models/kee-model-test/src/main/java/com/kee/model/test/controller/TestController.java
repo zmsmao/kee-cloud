@@ -48,7 +48,6 @@ public class TestController extends BaseController {
     @GetMapping("/test")
     @ApiOperation(value = "测试")
     public AjaxResult list() {
-        System.out.println(config.getAcquisition().getLocalPath());
         WebDriver webDriver = WebDriverAcquisitionUtil.chromeDriver(config.getAcquisition().getLocalPath());
         ChromeDriver chromeDriver = (ChromeDriver)webDriver;
         ChromeDevTools chromeDevTools = new ChromeDevTools(chromeDriver);

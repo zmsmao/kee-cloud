@@ -107,12 +107,17 @@ public class SmsCodeFilter extends AbstractGatewayFilterFactory<Object>{
     private void validateSmsCode(MultiValueMap<String,String> map) throws Exception {
         Object smsCode = map.get("code");
         Object phone = map.get("phone");
+        Object grantType = map.get("grant_type");
         if(StringUtils.isNull(phone)){
             throw new  RuntimeException("请求体无phone参数");
         }
         if (StringUtils.isNull(smsCode))
         {
             throw new  RuntimeException("请求体无code参数");
+        }
+        if (StringUtils.isNull(grantType))
+        {
+            throw new  RuntimeException("请求体无grant_type参数");
         }
         String phoneStr = ((List<String>)phone).get(0);
         if (StringUtils.isEmpty(phoneStr)) {
@@ -122,26 +127,10 @@ public class SmsCodeFilter extends AbstractGatewayFilterFactory<Object>{
         if (StringUtils.isEmpty(smsCodeStr)) {
             throw new RuntimeException("验证码不能为空！");
         }
-//        SmsCode cacheObject = redisService.getCacheObject(SMS_PHONE + phoneStr);
-//        System.out.println(SMS_PHONE+phoneStr);
-//        if(StringUtils.isNull(cacheObject))
-//        {
-//            redisService.deleteObject(SMS_PHONE + phoneStr);
-//            throw new RuntimeException("验证码不存在，请重新发送！");
-//        }
-//        if(cacheObject.isExpire())
-//        {
-//            redisService.deleteObject(SMS_PHONE + phoneStr);
-//            throw new RuntimeException("验证码已过期，请重新发送！");
-//        }
-//        if (!cacheObject.getCode().equals(smsCodeStr)) {
-//            redisService.deleteObject(SMS_PHONE + phoneStr);
-//            throw new RuntimeException("验证码不正确，请重新发送！");
-//        }
-//        if (!cacheObject.getPhone().equals(phoneStr)) {
-//            redisService.deleteObject(SMS_PHONE + phoneStr);
-//            throw new RuntimeException("手机号码不正确，请重新发送！");
-//        }
+        String grantTypeStr = ((List<String>)grantType).get(0);
+        if (StringUtils.isEmpty(grantTypeStr)) {
+            throw new RuntimeException("全局配置验证模式不能为空！");
+        }
     }
 
 }
