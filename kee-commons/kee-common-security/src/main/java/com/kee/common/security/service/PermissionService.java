@@ -163,6 +163,10 @@ public class PermissionService
      */
     private boolean hasPermissions(Collection<? extends GrantedAuthority> authorities, String permission)
     {
+        if("false".equals(permission))
+        {
+            return false;
+        }
         return authorities.stream().map(GrantedAuthority::getAuthority).filter(StringUtils::hasText)
                 .anyMatch(x -> ALL_PERMISSION.contains(x) || PatternMatchUtils.simpleMatch(permission, x));
     }

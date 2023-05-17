@@ -16,9 +16,8 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -63,6 +62,13 @@ public class TestController extends BaseController {
     @GetMapping("/task")
     public AjaxResult task(){
         return AjaxResult.success(taskService.createTaskQuery().list());
+    }
+
+    @PreAuthorize("@ss.hasPermi('test:test:add')")
+    @PostMapping("/add")
+    public AjaxResult add(@RequestBody Test test){
+        System.out.println(test.toString());
+        return AjaxResult.success();
     }
 
 
