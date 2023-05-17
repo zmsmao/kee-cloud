@@ -1,0 +1,38 @@
+# Tomcat
+server:
+  port: 9206
+
+# Spring
+spring: 
+  application:
+    # 应用名称
+    name: kee-model-test
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    # 环境配置
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        # 配置文件格式
+        file-extension: yaml
+        # 共享配置
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  # 工作流配置
+  activiti:
+    db-history-used: true
+    check-process-definitions: false
+    rest-api-enabled: true
+    history-level: full
+
+#驱动配置
+driver:
+  acquisition:
+    local-path: D://basicSoftware//chromedriver//chromedriver_win32_113//chromedriver.exe

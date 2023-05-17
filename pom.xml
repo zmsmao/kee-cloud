@@ -42,7 +42,7 @@
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <velocity.version>1.7</velocity.version>
         <fastjson.version>1.2.80</fastjson.version>
-        <minio.version>8.0.3</minio.version>
+        <minio.version>8.4.3</minio.version>
         <poi.version>5.2.3</poi.version>
         <hutool.version>5.8.1</hutool.version>
         <common-pool.version>2.11.1</common-pool.version>
@@ -122,18 +122,13 @@
                 <version>2.6.7</version>
             </dependency>
 
-            <!-- Micrometer core dependecy  -->
-            <dependency>
-                <groupId>io.micrometer</groupId>
-                <artifactId>micrometer-core</artifactId>
-                <version>1.9.6</version>
-            </dependency>
-            <!-- Micrometer Prometheus registry  -->
+            <!-- prometheus -->
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
-                <version>1.0.6</version>
+                <version>1.11.0</version>
             </dependency>
+
 
             <!-- Mybatis Plus依赖配置 -->
             <dependency>
@@ -337,6 +332,12 @@
 
             <dependency>
                 <groupId>com.kee</groupId>
+                <artifactId>kee-common-monitor</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kee</groupId>
                 <artifactId>kee-common-reptiles</artifactId>
                 <version>${kee.commons.version}</version>
             </dependency>
@@ -345,6 +346,18 @@
                 <groupId>com.kee</groupId>
                 <artifactId>kee-common-activiti</artifactId>
                 <version>${kee.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kee</groupId>
+                <artifactId>kee-common-seata</artifactId>
+                <version>${kee.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-spring-boot-starter</artifactId>
+                <version>1.6.0</version>
             </dependency>
 
             <dependency>
