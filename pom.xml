@@ -51,6 +51,7 @@
         <poi-tl.version>1.12.1</poi-tl.version>
         <kee.commons.version>1.0.0</kee.commons.version>
         <selenium.version>4.1.4</selenium.version>
+        <activiti.version>6.0.0</activiti.version>
     </properties>
 
     <dependencies>

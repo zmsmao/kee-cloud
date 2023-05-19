@@ -14,6 +14,7 @@
         <module>kee-model-test</module>
         <module>kee-model-file</module>
         <module>kee-model-job</module>
+        <module>kee-model-activiti</module>
     </modules>
 
     <artifactId>kee-models</artifactId>

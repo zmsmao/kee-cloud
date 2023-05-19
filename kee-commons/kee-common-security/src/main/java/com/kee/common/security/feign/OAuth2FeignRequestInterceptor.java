@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * 
  * @author zms
  */
-@Component
+//@Component
 public class OAuth2FeignRequestInterceptor implements RequestInterceptor
 {
     @Override
