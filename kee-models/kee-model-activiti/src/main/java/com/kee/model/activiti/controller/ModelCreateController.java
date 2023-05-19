@@ -37,13 +37,6 @@ public class ModelCreateController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    /**
-     * 流程编辑器建模页面路径
-     */
-    @GetMapping("/editor")
-    public String editorPath(){
-        return "modeler";
-    }
 
     @ApiOperation("保存模型")
     @PostMapping("/save")

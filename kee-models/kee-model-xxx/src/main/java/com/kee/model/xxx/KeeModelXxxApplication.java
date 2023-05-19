@@ -1,4 +1,4 @@
-package com.kee.model.activiti;
+package com.kee.model.xxx;
 
 
 import com.kee.common.security.annotation.EnableCustomConfig;
