@@ -12,6 +12,9 @@
  */
 package com.kee.model.activiti.controller;
 
+import com.kee.common.core.web.controller.BaseController;
+import com.kee.model.activiti.constant.ModelDataConstants;
+import io.swagger.annotations.Api;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
@@ -39,7 +42,8 @@ import java.io.InputStream;
  */
 @RestController
 @RequestMapping("/activiti/custom")
-public class ModelEditorController implements ModelDataJsonConstants {
+@Api(tags = "流程页面核心控制器")
+public class ModelEditorController extends BaseController {
   
   protected static final Logger LOGGER = LoggerFactory.getLogger(ModelEditorController.class);
   
@@ -49,7 +53,7 @@ public class ModelEditorController implements ModelDataJsonConstants {
   @Autowired
   private ObjectMapper objectMapper;
   
-  @RequestMapping(value="/model/{modelId}/json", method = RequestMethod.GET, produces = "application/json")
+  @GetMapping(value="/model/{modelId}/json",produces = "application/json")
   public ObjectNode getEditorJson(@PathVariable String modelId) {
     ObjectNode modelNode = null;
     
@@ -61,9 +65,9 @@ public class ModelEditorController implements ModelDataJsonConstants {
           modelNode = (ObjectNode) objectMapper.readTree(model.getMetaInfo());
         } else {
           modelNode = objectMapper.createObjectNode();
-          modelNode.put(MODEL_NAME, model.getName());
+          modelNode.put(ModelDataConstants.MODEL_NAME, model.getName());
         }
-        modelNode.put(MODEL_ID, model.getId());
+        modelNode.put(ModelDataConstants.MODEL_ID, model.getId());
         ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(
             new String(repositoryService.getModelEditorSource(model.getId()), "utf-8"));
         modelNode.put("model", editorJsonNode);
@@ -76,8 +80,8 @@ public class ModelEditorController implements ModelDataJsonConstants {
     return modelNode;
   }
 
-  @RequestMapping(value="/editor/stencilset", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-  public @ResponseBody String getStencilset() {
+  @GetMapping(value="/editor/stencilset",produces = "application/json;charset=utf-8")
+  public String getStencilset() {
     InputStream stencilsetStream = this.getClass().getClassLoader().getResourceAsStream("stencilset.json");
     try {
       return IOUtils.toString(stencilsetStream, "utf-8");
@@ -86,7 +90,7 @@ public class ModelEditorController implements ModelDataJsonConstants {
     }
   }
 
-  @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)
+  @PutMapping(value="/model/{modelId}/save")
   @ResponseStatus(value = HttpStatus.OK)
   public void saveModel(@PathVariable String modelId, String name,String description,String json_xml, String svg_xml) {
     try {
@@ -95,8 +99,8 @@ public class ModelEditorController implements ModelDataJsonConstants {
 
       ObjectNode modelJson = (ObjectNode) objectMapper.readTree(model.getMetaInfo());
 
-      modelJson.put(MODEL_NAME, name);
-      modelJson.put(MODEL_DESCRIPTION, description);
+      modelJson.put(ModelDataConstants.MODEL_NAME, name);
+      modelJson.put(ModelDataConstants.MODEL_DESCRIPTION, description);
       model.setMetaInfo(modelJson.toString());
       model.setName(name);
 
