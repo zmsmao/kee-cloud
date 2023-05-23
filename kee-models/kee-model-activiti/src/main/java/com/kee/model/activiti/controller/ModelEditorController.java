@@ -103,6 +103,7 @@ public class ModelEditorController extends BaseController {
       modelJson.put(ModelDataConstants.MODEL_DESCRIPTION, description);
       model.setMetaInfo(modelJson.toString());
       model.setName(name);
+      model.setVersion(model.getVersion()+1);
 
       repositoryService.saveModel(model);
 

@@ -29,7 +29,3 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   activiti:
     check-process-definitions: false
-  # 模板引擎
-  thymeleaf:
-    mode: HTML
-    encoding: utf-8

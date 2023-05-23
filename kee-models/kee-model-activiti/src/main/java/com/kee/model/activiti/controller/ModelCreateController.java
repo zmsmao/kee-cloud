@@ -61,7 +61,7 @@ public class ModelCreateController extends BaseController {
                 .latestVersion().orderByCreateTime().desc().list());
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "删除模型")
     public AjaxResult deleteModel(@PathVariable("id") String id){
         repositoryService.deleteModel(id);
