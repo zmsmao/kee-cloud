@@ -15,6 +15,7 @@
         <module>kee-model-file</module>
         <module>kee-model-job</module>
         <module>kee-model-activiti</module>
+        <module>kee-model-io</module>
     </modules>
 
     <artifactId>kee-models</artifactId>
