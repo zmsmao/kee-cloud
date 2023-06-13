@@ -6,35 +6,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** 对应于在表单中的list的比较操作crud
+/** 在表单中的list的比较操作
  * @Description : Object
  * @author: zeng.maosen
  */
 public class ListComparisonUtil {
 
+    public static String add = "addExcessive";
+    public static String remove = "removeExcessive";
+    public static String update = "updateCommon";
     /**
      * 筛选的条件必须保证唯一性，curList对应的field值可以为空，但是preList对应的field值不能为空
-     * @param curList
-     * @param preList
+     * @param curList 前端list
+     * @param preList 后端list
      * @param screenKey
      * @param <K>
      * @return
      */
     private static <K> Map<String, List<K>> twoListComparison(List<K> curList, List<K> preList, String screenKey) {
         try {
-            String addExcessive = "addExcessive";
-            String removeExcessive = "removeExcessive";
-            String updateCommon = "updateCommon";
+
             Map<String, List<K>> map = new HashMap<>(16);
-            map.put(addExcessive, new ArrayList<>());
-            map.put(removeExcessive, new ArrayList<>());
-            map.put(updateCommon, new ArrayList<>());
+            map.put(add, new ArrayList<>());
+            map.put(remove, new ArrayList<>());
+            map.put(update, new ArrayList<>());
             if (curList.isEmpty()) {
-                map.put(removeExcessive, preList);
+                map.put(remove, preList);
                 return map;
             }
             if (preList.isEmpty()) {
-                map.put(addExcessive, curList);
+                map.put(add, curList);
                 return map;
             }
             Field key = findField(curList, screenKey);
@@ -44,9 +45,9 @@ public class ListComparisonUtil {
             for (K k : curList) {
                 Object o = key.get(k);
                 if (StringUtils.isNull(o)) {
-                    List<K> ks = map.get(addExcessive);
+                    List<K> ks = map.get(add);
                     ks.add(k);
-                    map.put(addExcessive, ks);
+                    map.put(add, ks);
                     continue;
                 }
                 curKMap.put(o, k);
@@ -71,11 +72,11 @@ public class ListComparisonUtil {
             //common
             copyCurIds2.retainAll(preIds);
 
-            mapIds(map, curKMap, copyCurIds, addExcessive);
+            mapIds(map, curKMap, copyCurIds, add);
 
-            mapIds(map, preKMap, copyPreIds, removeExcessive);
+            mapIds(map, preKMap, copyPreIds, remove);
 
-            mapIds(map, curKMap, copyCurIds2, updateCommon);
+            mapIds(map, curKMap, copyCurIds2, update);
 
             return map;
         } catch (Exception e) {
@@ -86,17 +87,16 @@ public class ListComparisonUtil {
 
     public static <K> Map<String, Object> listAndStringComparison(List<K> preList, List<String> curIds, String screenKey) {
         try {
-            String addExcessive = "addExcessive";
-            String removeExcessive = "removeExcessive";
             Map<String, Object> map = new HashMap<>(16);
-            map.put(addExcessive, new ArrayList<>());
-            map.put(removeExcessive, new ArrayList<>());
+            map.put(add, new ArrayList<>());
+            map.put(remove, new ArrayList<>());
+            map.put(update, new ArrayList<>());
             if (curIds.isEmpty()) {
-                map.put(removeExcessive, preList);
+                map.put(remove, preList);
                 return map;
             }
             if (preList.isEmpty()) {
-                map.put(addExcessive, curIds);
+                map.put(add, curIds);
                 return map;
             }
             Field key = findField(preList, screenKey);
@@ -123,16 +123,23 @@ public class ListComparisonUtil {
             copyCurIds.removeAll(copyPreIds);
             //remove
             copyPreIds.removeAll(copyCurIds2);
+            //common
+            preIds.removeAll(copyPreIds);
 
             for (String id : copyCurIds) {
-                List<String> ks = (List<String>) map.get(addExcessive);
+                List<String> ks = (List<String>) map.get(add);
                 ks.add(id);
-                map.put(addExcessive, ks);
+                map.put(add, ks);
             }
             for (String preId : copyPreIds) {
-                List<K> ks = (List<K>) map.get(removeExcessive);
+                List<K> ks = (List<K>) map.get(remove);
                 ks.add(preKMap.get(preId));
-                map.put(addExcessive, ks);
+                map.put(remove, ks);
+            }
+            for(String id:preIds){
+                List<K> ks = (List<K>) map.get(update);
+                ks.add(preKMap.get(id));
+                map.put(update, ks);
             }
             return map;
         } catch (Exception e) {
@@ -163,4 +170,43 @@ public class ListComparisonUtil {
         }
         return key;
     }
+
+////    测试案例
+//    public static void main(String[] args) {
+//        List<JointInvitationLetter> jointInvitationLetters = new ArrayList<>();
+//        JointInvitationLetter jointInvitationLetter = new JointInvitationLetter();
+//        jointInvitationLetter.setJointInvitationLetterId(1L);
+//        JointInvitationLetter jointInvitationLetter1 = new JointInvitationLetter();
+//        jointInvitationLetter1.setJointInvitationLetterId(2L);
+//        jointInvitationLetters.add(jointInvitationLetter);
+//        jointInvitationLetters.add(jointInvitationLetter1);
+//        List<String> list = new ArrayList<>();
+//        list.add("1");
+//        list.add("3");
+//        Map<String, Object> map = listAndStringComparison(jointInvitationLetters, list, "jointInvitationLetterId");
+//        System.out.println(map.get(update));
+//        System.out.println(map.get(add));
+//        System.out.println(map.get(remove));
+
+//        List<JointInvitationLetter> jointInvitationLetters = new ArrayList<>();
+//        JointInvitationLetter jointInvitationLetter = new JointInvitationLetter();
+//        jointInvitationLetter.setJointInvitationLetterId(1L);
+//        JointInvitationLetter jointInvitationLetter1 = new JointInvitationLetter();
+//        jointInvitationLetter1.setJointInvitationLetterId(2L);
+//        jointInvitationLetters.add(jointInvitationLetter);
+//        jointInvitationLetters.add(jointInvitationLetter1);
+//
+//        List<JointInvitationLetter> jointInvitationLetters1 = new ArrayList<>();
+//        JointInvitationLetter jointInvitationLetter11 = new JointInvitationLetter();
+//        jointInvitationLetter11.setJointInvitationLetterId(1L);
+//        JointInvitationLetter jointInvitationLetter12 = new JointInvitationLetter();
+//        jointInvitationLetter12.setJointInvitationLetterId(3L);
+//        jointInvitationLetters1.add(jointInvitationLetter11);
+//        jointInvitationLetters1.add(jointInvitationLetter12);
+//
+//        Map<String, List<JointInvitationLetter>> map = twoListComparison(jointInvitationLetters1, jointInvitationLetters, "jointInvitationLetterId");
+//        System.out.println(map.get(update));
+//        System.out.println(map.get(add));
+//        System.out.println(map.get(remove));
+//    }
 }
