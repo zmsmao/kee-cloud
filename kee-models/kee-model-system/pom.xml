@@ -78,10 +78,10 @@
             <artifactId>kee-common-reptiles</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.kee</groupId>
-            <artifactId>kee-common-seata</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.kee</groupId>-->
+<!--            <artifactId>kee-common-seata</artifactId>-->
+<!--        </dependency>-->
 
     </dependencies>
 
@@ -91,7 +91,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.6.7</version>
+                <version>${spring-boot.version}</version>
                 <executions>
                     <execution>
                         <goals>

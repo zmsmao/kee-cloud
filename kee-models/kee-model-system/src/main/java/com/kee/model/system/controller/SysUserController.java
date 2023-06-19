@@ -17,7 +17,6 @@ import com.kee.common.security.utils.SecurityUtils;
 import com.kee.model.system.service.ISysPermissionService;
 import com.kee.model.system.service.ISysRoleService;
 import com.kee.model.system.service.ISysUserService;
-import io.seata.spring.annotation.GlobalTransactional;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +81,7 @@ public class SysUserController extends BaseController
      * 获取用户列表
      */
     //@PreAuthorize("@ss.hasPermi('system:user:list')")
-    @GlobalTransactional
+//    @GlobalTransactional
     @GetMapping("/getList")
     public TableDataInfo getList()
     {
