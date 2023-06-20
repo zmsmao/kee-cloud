@@ -1,0 +1,150 @@
+version: '3'
+services:
+  kee-auth:
+    image: kee-auth:latest
+    privileged: true
+    container_name: kee-auth
+    restart: on-failure
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - '9104:9104'
+    environment:
+      # 指定时区
+      - TZ="Asia/Shanghai"
+      #启动容器后执行的命令
+    entrypoint: java -server -Xms256m -Xmx256m -jar -Dserver.port=9104 -Dspring.profiles.active=dev kee-auth.jar
+    depends_on:
+      - kee-redis
+      - kee-nacos
+      - kee-mysql
+      - kee-gateway
+
+  kee-gateway:
+    image: kee-gateway:latest
+    privileged: true
+    container_name: kee-gateway
+    restart: on-failure
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - '9102:9102'
+    environment:
+      # 指定时区
+      - TZ="Asia/Shanghai"
+      #启动容器后执行的命令
+    entrypoint: java -server -Xms256m -Xmx256m -jar -Dserver.port=9102 -Dspring.profiles.active=dev kee-gateway.jar
+    depends_on:
+      - kee-redis
+      - kee-nacos
+      - kee-mysql
+
+  kee-model-system:
+    image: kee-model-system:latest
+    container_name: kee-model-system
+    privileged: true
+    restart: on-failure
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - '9201:9201'
+    environment:
+      # 指定时区
+      - TZ="Asia/Shanghai"
+      #启动容器后执行的命令
+    entrypoint: java -server -Xms256m -Xmx256m -jar -Dserver.port=9201 kee-model-system.jar
+    depends_on:
+      - kee-redis
+      - kee-nacos
+      - kee-mysql
+      - kee-auth
+      - kee-gateway
+
+  kee-model-activiti:
+    image: kee-model-activiti:latest
+    container_name: kee-model-activiti
+    privileged: true
+    restart: on-failure
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - '9204:9204'
+    environment:
+      # 指定时区
+      - TZ="Asia/Shanghai"
+      #启动容器后执行的命令
+    entrypoint: java -server -Xms256m -Xmx256m -jar -Dserver.port=9204 -Dspring.profiles.active=dev kee-model-activiti.jar
+    depends_on:
+      - kee-redis
+      - kee-nacos
+      - kee-mysql
+      - kee-auth
+      - kee-gateway
+
+  kee-model-test:
+    image: kee-model-test:latest
+    container_name: kee-model-test
+    privileged: true
+    restart: on-failure
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - '9206:9206'
+    environment:
+      # 指定时区
+      - TZ="Asia/Shanghai"
+      #启动容器后执行的命令
+    entrypoint: java -server -Xms256m -Xmx256m -jar -Dserver.port=9206 -Dspring.profiles.active=dev kee-model-test.jar
+
+    depends_on:
+      - kee-redis
+      - kee-nacos
+      - kee-mysql
+      - kee-auth
+      - kee-gateway
+
+  kee-mysql:
+    image: mysql:8.0
+    container_name: kee-mysql
+    privileged: true
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - ./kee-mysql:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  kee-redis:
+    image: redis:7.0.11
+    container_name: kee-redis
+    privileged: true
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./kee-redis/data:/data
+      - ./kee-redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  kee-nacos:
+    privileged: true
+    image: nacos/nacos-server:v2.2.0
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: 192.168.52.2
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: root
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    depends_on:
+      - kee-mysql
+    restart: on-failure
+
