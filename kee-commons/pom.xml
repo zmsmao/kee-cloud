@@ -26,6 +26,7 @@
         <module>kee-common-activiti</module>
         <module>kee-common-seata</module>
         <module>kee-common-monitor</module>
+        <module>kee-common-rocketmq</module>
     </modules>
 
 

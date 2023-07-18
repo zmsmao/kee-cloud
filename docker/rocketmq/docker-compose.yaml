@@ -1,0 +1,53 @@
+version: '3'
+services:
+  kee-rmqnamesrv:
+    image: foxiswho/rocketmq:4.8.0
+    container_name: kee-rmqnamesrv
+    ports:
+      - '9876:9876'
+    volumes:
+      - ./name/logs:/home/rocketmq/logs
+      - ./name/store:/home/rocketmq/store
+    environment:
+      JAVA_OPT_EXT: "-Duser.home=/home/rocketmq -Xms512M -Xmx512M -Xmn128m"
+    command: ["sh","mqnamesrv"]
+    networks:
+      rmq:
+        aliases:
+          - kee-rmqnamesrv
+  kee-rmqbroker:
+    image: foxiswho/rocketmq:4.8.0
+    container_name: kee-rmqbroker
+    ports:
+      - '10909:10909'
+      - '10911:10911'
+    volumes:
+      - ./rmq/logs:/home/rocketmq/logs
+      - ./rmq/store:/home/rocketmq/store
+      - ./rmq/conf/broker.conf:/etc/rocketmq/broker.conf
+    command: ["sh","mqbroker","-c","/etc/rocketmq/broker.conf","-n","kee-rmqnamesrv:9876","autoCreateTopicEnable=true"]
+    depends_on:
+      - kee-rmqnamesrv
+    networks:
+      rmq:
+        aliases:
+          - kee-rmqbroker
+
+  kee-rmqconsole:
+    image: styletang/rocketmq-console-ng
+    container_name: kee-rmqconsole
+    ports:
+      - '8180:8080'
+    environment:
+      JAVA_OPTS: "-Drocketmq.namesrv.addr=kee-rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
+    depends_on:
+      - kee-rmqnamesrv
+    networks:
+      rmq:
+        aliases:
+          - kee-rmqconsole
+
+networks:
+  rmq:
+    name: rmq
+    driver: bridge
