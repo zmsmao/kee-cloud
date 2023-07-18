@@ -16,8 +16,8 @@
         <module>kee-model-job</module>
         <module>kee-model-activiti</module>
         <module>kee-model-io</module>
-        <module>kee-model-rocketmq-producer</module>
         <module>kee-model-rocketmq-consumer</module>
+        <module>kee-model-rocketmq-producer</module>
     </modules>
 
     <artifactId>kee-models</artifactId>

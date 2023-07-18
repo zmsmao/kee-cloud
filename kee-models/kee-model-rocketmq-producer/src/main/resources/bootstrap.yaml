@@ -6,7 +6,7 @@ server:
 spring:
   application:
     # 应用名称
-    name: kee-model-rockermq-producer
+    name: kee-model-rocketmq-producer
   main:
     allow-bean-definition-overriding: true
   profiles:

@@ -1,4 +1,4 @@
-package com.kee.model.rocketmq.producer;
+package com.kee.model.rocketmq.consumer;
 
 
 import com.kee.common.security.annotation.EnableCustomConfig;
