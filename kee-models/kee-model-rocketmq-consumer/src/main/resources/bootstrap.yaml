@@ -6,7 +6,7 @@ server:
 spring:
   application:
     # 应用名称
-    name: kee-model-rocketmq-comsumer
+    name: kee-model-rocketmq-consumer
   main:
     allow-bean-definition-overriding: true
   profiles:
