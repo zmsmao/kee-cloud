@@ -8,6 +8,6 @@ ADD kee-model-rocketmq-producer.jar /app/kee-model-rocketmq-producer.jar
 
 VOLUME /app/logs
 
-EXPOSE 9210
+EXPOSE 9211
 
 ENTRYPOINT ["java","-jar","kee-model-xxx.jar"]
