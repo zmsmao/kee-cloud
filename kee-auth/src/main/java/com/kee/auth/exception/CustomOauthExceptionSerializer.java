@@ -34,6 +34,7 @@ public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthExc
     public void serialize(CustomOauthException e, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
             throws IOException
     {
+        log.error(e.getMessage(), e.getMessage());
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField(AjaxResult.CODE_TAG, HttpStatus.ERROR);
         if (StringUtils.equals(e.getMessage(), BAD_CREDENTIALS))
