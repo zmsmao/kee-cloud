@@ -1,93 +1,33 @@
 package com.kee.common.core.utils.poi;
 
+import com.aspose.words.Document;
+import com.aspose.words.License;
+import com.aspose.words.SaveFormat;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.config.Configure;
-import com.deepoove.poi.data.AttachmentRenderData;
-import com.deepoove.poi.data.AttachmentType;
-import com.deepoove.poi.data.Attachments;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
-import com.deepoove.poi.policy.AttachmentRenderPolicy;
 import com.deepoove.poi.util.PoitlIOUtils;
-
 import com.kee.common.core.annotation.Word;
 import com.kee.common.core.utils.StringUtils;
-import fr.opensagres.xdocreport.document.IXDocReport;
-import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
-import fr.opensagres.xdocreport.template.IContext;
-import fr.opensagres.xdocreport.template.TemplateEngineKind;
-import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
 import lombok.Data;
 import org.ddr.poi.html.HtmlRenderPolicy;
 import org.springframework.core.io.ClassPathResource;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
- * 具体word模板格式参考：http://deepoove.com/poi-tl/
  * @Description : TODO
- * @author zms
+ * @author: zeng.maosen
+ * @date: 2022/12/14
+ * @version: 1.0
  */
 @Data
 public class WordUtils {
-
-    /**
-     * @param response     请求响应
-     * @param objectName   映射对象名称
-     * @param object       映射对象
-     * @param templateName 模板路径名称
-     */
-    public static void downloadWord(HttpServletResponse response, String objectName, Object object, String templateName) {
-        try {
-            IXDocReport report = report(templateName);
-            IContext context = report.createContext();
-            //替换word模板中创建的域的变量
-            context.put(objectName, object);
-            //设置请求头
-            setResponseHeader(response);
-            //游览器输出
-            setResponseOutput(response, report, context);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * @param response     请求响应
-     * @param objectName   映射对象名称
-     * @param object       映射对象
-     * @param listName     支持list名称
-     * @param list         单独支持list
-     * @param templateName 模板路径名称
-     */
-    public static <K> void downloadWord(HttpServletResponse response, String objectName, Object object, String listName, List<K> list, String templateName) {
-        try {
-            IXDocReport report = report(templateName);
-            IContext context = report.createContext();
-            //替换word模板中创建的域的变量
-            context.put(objectName, object);
-            //设置list
-            setListFieldsMetadata(listName, list, report, context);
-            //设置请求头
-            setResponseHeader(response);
-            //游览器输出
-            setResponseOutput(response, report, context);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     /**
      * 此方法必须在对象属性上加入@Word
      * 支持复杂导出
@@ -161,7 +101,7 @@ public class WordUtils {
             HashMap<String,Object> dataSMap = new HashMap<>(16);
             dataSMap.put(name,dataS);
             XWPFTemplate xwpfTemplate = XWPFTemplate.compile(classPathResource.getInputStream(), config)
-                    .render(dataSMap);
+                    .render(dataS);
             setResponseHeader(response);
             setResponseOutput(response,xwpfTemplate);
         } catch (Exception e) {
@@ -169,17 +109,17 @@ public class WordUtils {
         }
     }
 
-    public static <K> Map<String, Object> mapperSingleEntity(K obj,Configure config) throws Exception{
+    private static <K> Map<String, Object> mapperSingleEntity(K obj,Configure config) throws Exception{
         Map<String, Object> dataMap = new HashMap<>(16);
-        Map<Field, Word> map = getAnnotationByFiled(obj,Word.class);
+        Map<Field, Word> map = getAnnotationByFiled(obj);
         for (Map.Entry<Field, Word> entry : map.entrySet()) {
             Field key = entry.getKey();
             Word value = entry.getValue();
             String name = value.name();
-            Object o = key.get(obj);
             //动态表单
             if (value.type() == Word.TypeField.LIST) {
                 LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
+                Object o = key.get(obj);
                 if (key.getType() == List.class || o instanceof List) {
                     if (StringUtils.isEmpty(name)) {
                         name = key.getName();
@@ -191,6 +131,7 @@ public class WordUtils {
             //嵌入富文本
             else if (value.type() == Word.TypeField.HTMLTEXT) {
                 HtmlRenderPolicy htmlRenderPolicy = new HtmlRenderPolicy();
+                Object o = key.get(obj);
                 if (key.getType() == String.class || o instanceof String) {
                     if (StringUtils.isEmpty(name)) {
                         name = key.getName();
@@ -199,49 +140,33 @@ public class WordUtils {
                     config.customPolicy(name, htmlRenderPolicy);
                 }
             }
-            //附件
-            else if (value.type() == Word.TypeField.ATTACHMENT) {
-                AttachmentRenderPolicy attachmentRenderPolicy =  new AttachmentRenderPolicy();
-                if (key.getType() == String.class || o instanceof String) {
-                    if (StringUtils.isEmpty(name)) {
-                        name = key.getName();
-                    }
-                    String url = (String) o;
-                    AttachmentRenderData attach;
-                    if("xlsx".equals(url.substring(url.length()-4).toUpperCase())) {
-                        attach = Attachments.ofLocal((String) o, AttachmentType.XLSX).create();
-                    }
-                    else{
-                        attach = Attachments.ofLocal((String) o, AttachmentType.DOCX).create();
-                    }
-                    dataMap.put(name,attach);
-                    config.customPolicy(name,attachmentRenderPolicy);
-                }
-            }
             //默认文本
             else {
                 if (StringUtils.isEmpty(name)) {
                     name = key.getName();
                 }
+                Object o = key.get(obj);
                 dataMap.put(name, o);
             }
         }
         return dataMap;
     }
 
-    private static <T extends Annotation> Map<Field, T> getAnnotationByFiled(Object obj, Class<T> annotationClass) {
+    private static <K> Map<Field, Word> getAnnotationByFiled(K obj) {
         //存储对象和接口
-        Map<Field, T> map = new HashMap<>(16);
+        Map<Field, Word> map = new HashMap<>(16);
         //获取类加载器
         if (StringUtils.isNull(obj)) {
             return map;
         }
         Class<?> clazz = obj.getClass();
+        //初始化导出类型
+        Word.TypeField wField = Word.TypeField.NATURE;
         //获取class
         Field[] declaredFields = clazz.getDeclaredFields();
         //获取加入注解的属性
         for (Field field : declaredFields) {
-            T word = field.getAnnotation(annotationClass);
+            Word word = field.getAnnotation(Word.class);
             if (StringUtils.isNotNull(word)) {
                 makeAccessible(field);
                 map.put(field, word);
@@ -256,7 +181,7 @@ public class WordUtils {
      *
      * @param response
      */
-    public static void setResponseHeader(HttpServletResponse response) {
+    private static void setResponseHeader(HttpServletResponse response) {
         try {
             // 设置response的编码方式
             response.setHeader("content-type", "application/octet-stream");
@@ -269,39 +194,12 @@ public class WordUtils {
     }
 
     /**
-     * 传入模板路径，生成FreeMarker模板word
-     *
-     * @param templateName
-     * @return
-     */
-    private static IXDocReport report(String templateName) {
-        InputStream resourceAsStream = null;
-        IXDocReport report = null;
-        try {
-            ClassPathResource classPathResource = new ClassPathResource(templateName);
-            resourceAsStream = classPathResource.getInputStream();
-            report = XDocReportRegistry.getRegistry().loadReport(resourceAsStream, TemplateEngineKind.Freemarker);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        } finally {
-            try {
-                if (resourceAsStream != null) {
-                    resourceAsStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return report;
-    }
-
-    /**
      * 整合下载
      *
      * @param response 响应体
      * @param template 模板
      */
-    public static void setResponseOutput(HttpServletResponse response, XWPFTemplate template) {
+    private static void setResponseOutput(HttpServletResponse response, XWPFTemplate template) {
         //缓冲流
         ByteArrayOutputStream bout = null;
         // 创建输出流
@@ -331,76 +229,7 @@ public class WordUtils {
         }
     }
 
-    /**
-     * 整合下载
-     *
-     * @param response 响应体
-     * @param report   word模板解析
-     * @param context  word模板解析内容
-     */
-    private static void setResponseOutput(HttpServletResponse response, IXDocReport report, IContext context) {
-        //缓冲流
-        ByteArrayOutputStream bout = null;
-        // 创建输出流
-        ServletOutputStream out = null;
-        try {
-            // 输出流赋值
-            out = response.getOutputStream();
-            bout = new ByteArrayOutputStream();
-            //输出到游览器
-            report.process(context, bout);
-            out.write(bout.toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("导出word失败!");
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-                if (bout != null) {
-                    bout.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    /**
-     * 本地测试
-     *
-     * @param report  word模板解析
-     * @param context word模板解析内容
-     */
-    private static void setLocalFileOutPut(IXDocReport report, IContext context) {
-        //缓冲流
-        ByteArrayOutputStream bout = null;
-        // 创建输出流
-        FileOutputStream out = null;
-        try {
-            // 输出流赋值
-            out = new FileOutputStream(new File("D:\\template.docx"));
-            bout = new ByteArrayOutputStream();
-            //输出到本地
-            report.process(context, bout);
-            out.write(bout.toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("导出word失败!");
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-                if (bout != null) {
-                    bout.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     /**
      * 获取属性名数组
@@ -416,24 +245,6 @@ public class WordUtils {
 
 
     /**
-     * 设定list
-     */
-    private static <K> void setListFieldsMetadata(String listName, List<K> list, IXDocReport report, IContext context) {
-        if (!list.isEmpty()) {
-            K obj = list.get(0);
-            String[] filedName = getFiledName(obj);
-            //设定list对应表格参数
-            FieldsMetadata metadata = new FieldsMetadata();
-            for (String field : filedName) {
-                metadata.addFieldAsList(listName + "." + field);
-            }
-            report.setFieldsMetadata(metadata);
-            //替换word模板中创建的list变量
-            context.put(listName, list);
-        }
-    }
-
-    /**
      * 私有属性变可用
      *
      * @param field
@@ -442,6 +253,40 @@ public class WordUtils {
         if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())
                 || Modifier.isFinal(field.getModifiers()) && !field.isAccessible()) {
             field.setAccessible(true);
+        }
+    }
+
+    private static boolean getLicense() {
+        boolean result = false;
+        try {
+            ClassPathResource classPathResource = new ClassPathResource("xml\\license.xml");
+            License aposeLic = new License();
+            aposeLic.setLicense(classPathResource.getInputStream());
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static void doc2pdf(String inPath, String outPath) {
+        // 验证License 若不验证则转化出的pdf文档会有水印产生
+        if (!getLicense()) {
+            return;
+        }
+        try {
+            long old = System.currentTimeMillis();
+            // 新建一个空白pdf文档
+            File file = new File(outPath);
+            FileOutputStream os = new FileOutputStream(file);
+            // Address是将要被转化的word文档
+            Document doc = new Document(inPath);
+            // 全面支持DOC, DOCX, OOXML, RTF HTML, OpenDocument, PDF, EPUB, XPS, SWF 相互转换
+            doc.save(os, SaveFormat.PDF);
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("word转pdf失败");
         }
     }
 }
